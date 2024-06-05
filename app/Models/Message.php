@@ -21,4 +21,13 @@ class Message extends Model
     {
         return $this->belongsTo(User::class, 'receiver_id');
     }
+
+    public function profile_image()
+    {
+        if ($this->sender->profile_image) {
+            return $this->sender->profile_image;
+        } else {
+            return json_encode("No hay foto de perfil");
+        }
+    }
 }

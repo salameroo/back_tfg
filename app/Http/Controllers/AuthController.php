@@ -50,13 +50,6 @@ class AuthController extends Controller
         }
     }
 
-    public function loginGet()
-    {
-        return response()->json([
-            'comeme los huevos',
-        ]);
-    }
-
     public function login(Request $request)
     {
         // Validar las credenciales del usuario
@@ -77,7 +70,7 @@ class AuthController extends Controller
         $token = $user->createToken('authToken')->plainTextToken;
 
         // Crear una cookie segura para el token
-        $cookie = cookie('auth__token', $token, 60 * 24 * 7, null, null, true, true, false, 'Strict'); // Cookie válida por 7 días
+        $cookie = cookie('auth_token', $token, 60 * 24 * 7, null, null, true, true, false, 'None'); // Cookie válida por 7 días
 
         // Devolver la respuesta exitosa con el token en una cookie
         return response()->json([
@@ -92,19 +85,26 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         // Invalida el token de autenticación del usuario
-        // Invalida el token de autenticación del usuario
         $request->user()->tokens()->delete();
+
 
         // Invalidar la sesión en el servidor
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Devolver la respuesta de éxito
-        return response()->json([
+        // Elimina las cookies de sesión y CSRF
+        $response = response()->json([
             'success' => true,
             'message' => 'Logout successful'
         ], 200);  // Código de estado 200 (OK)
+
+        // Configura las cookies para que se eliminen
+        $response->headers->clearCookie('XSRF-TOKEN');
+        $response->headers->clearCookie('laravel_session');
+
+        return $response;
     }
+
 
     public function user(Request $request)
     {

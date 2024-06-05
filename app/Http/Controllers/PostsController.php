@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Image as ImageModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
@@ -131,4 +132,58 @@ class PostsController extends Controller
         $post->delete();
         return response()->json(null, 204);
     }
-}
+    public function getUserPosts(Request $request)
+    {
+        $user = $request->user(); // Suponiendo que usas autenticación y el usuario está autenticado
+        $posts = Post::where('user_id', $user->id)->get();
+
+        return response()->json($posts);
+    }
+    public function getPostsMap()
+    {
+        $posts = Post::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->select('id', 'title', 'latitude', 'longitude')
+            ->get();
+        return response()->json($posts);
+    }
+
+    public function getUniquePost($id)
+    {
+        try {
+            // Obtener el post por ID, incluyendo el usuario, likes, comentarios y las imágenes
+            $post = Post::with(['user', 'likes', 'comments.user', 'images'])->findOrFail($id);
+
+            // Mapear las imágenes para devolver la URL completa
+            $post->images = $post->images->map(function ($image) {
+                return [
+                    'id' => $image->id,
+                    'post_id' => $image->post_id,
+                    'url' => url(Storage::url($image->url)),
+                    'created_at' => $image->created_at,
+                    'updated_at' => $image->updated_at,
+                ];
+            });
+
+            return response()->json($post, 200);
+        } catch (ModelNotFoundException $e) {
+            // Si no se encuentra el post, devolver un error 404
+            return response()->json(['message' => 'Post not found'], 404);
+        } catch (\Exception $e) {
+            // Manejar cualquier otro error
+            return response()->json(['message' => 'An error occurred while fetching the post'], 500);
+        }
+    }
+
+    public function getRandomPosts(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $perPage = 12;
+
+        $posts = Post::with(['images', 'user', 'likes', 'comments.user'])
+            ->inRandomOrder()
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json($posts, 200);
+    }
+};

@@ -5,6 +5,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,6 +18,47 @@ class MessageController extends Controller
             ->orWhere('receiver_id', $user->id)
             ->with('sender', 'receiver')
             ->get();
+
+        return response()->json($messages);
+    }
+
+    public function getConversations()
+    {
+        $userId = Auth::id();
+
+        $conversations = Message::where('sender_id', $userId)
+            ->orWhere('receiver_id', $userId)
+            ->with(['sender', 'receiver'])
+            ->get()
+            ->groupBy(function ($message) use ($userId) {
+                return $message->sender_id == $userId ? $message->receiver_id : $message->sender_id;
+            });
+
+        $users = $conversations->map(function ($messages, $userId) {
+            return User::find($userId);
+        });
+
+        // Agregar registro de depuración
+        \Log::info('Conversations:', $users->toArray());
+
+        return response()->json($users->values());
+    }
+
+    public function getMessages($userId)
+    {
+        $authId = Auth::id();
+
+        $messages = Message::where(function ($query) use ($authId, $userId) {
+            $query->where('sender_id', $authId)
+                ->where('receiver_id', $userId);
+        })->orWhere(function ($query) use ($authId, $userId) {
+            $query->where('sender_id', $userId)
+                ->where('receiver_id', $authId);
+        })->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get()
+            ->reverse()
+            ->values();
 
         return response()->json($messages);
     }

@@ -32,7 +32,7 @@ return [
     |
     */
 
-    'lifetime' => env('SESSION_LIFETIME', 120),
+    'lifetime' => env('SESSION_LIFETIME', 240),
 
     'expire_on_close' => true,
 
@@ -169,8 +169,7 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
-
+    'secure' => env('SESSION_SECURE_COOKIE', true),
     /*
     |--------------------------------------------------------------------------
     | HTTP Access Only
@@ -197,7 +196,7 @@ return [
     |
     */
 
-    'same_site' => 'lax',
+    'same_site' =>  env('SESSION_SAME_SITE', 'none'),
 
     /*
     |--------------------------------------------------------------------------
