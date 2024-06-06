@@ -15,7 +15,7 @@ class InitDB extends Seeder
     public function run(): void
     {
         // Ruta al archivo SQL
-        $path = database_path('seeders/cargram.sql');
+        $path = database_path('seeders/CargramLlenito.sql');
 
         // Lee el contenido del archivo SQL
         $sql = File::get($path);
