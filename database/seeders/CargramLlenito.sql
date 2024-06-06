@@ -16,8 +16,8 @@
 
 
 -- Volcando estructura de base de datos para cargram
-CREATE DATABASE IF NOT EXISTS `cargram` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `cargram`;
+CREATE DATABASE IF NOT EXISTS `railway` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `railway`;
 
 -- Volcando estructura para tabla cargram.comments
 CREATE TABLE IF NOT EXISTS `comments` (
