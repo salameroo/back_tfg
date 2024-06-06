@@ -1,7 +1,10 @@
 # Usa la imagen oficial de PHP
 FROM php:8.1-fpm
 
-# Instala extensiones de PHP necesarias
+# Establecer el directorio de trabajo
+WORKDIR /var/www
+
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -13,29 +16,37 @@ RUN apt-get update && apt-get install -y \
     vim \
     unzip \
     git \
-    curl
+    curl \
+    libzip-dev \
+    libonig-dev \
+    libxml2-dev
+# Instalar extensiones de PHP
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Instala extensiones adicionales de PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-
-# Instala Composer
+# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Define el directorio de trabajo
-WORKDIR /var/www
+# Copiar el archivo composer.json y composer.lock
+COPY composer.json composer.lock /var/www/
 
-# Copia el composer.json y el composer.lock y ejecuta composer install
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-progress --no-interaction
+# Instalar dependencias de Composer
+RUN composer install --no-scripts --no-autoloader
 
-# Copia el resto de los archivos de la aplicación
-COPY . .
+# Copiar el resto de la aplicación
+COPY . /var/www
 
-# Asigna permisos a las carpetas de almacenamiento y caché
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+# Instalar dependencias de Composer y construir la aplicación
+RUN composer install
 
-# Exponer el puerto 9000 para PHP-FPM
+# Copiar el archivo de configuración de PHP
+COPY ./docker/php.ini /usr/local/etc/php/
+
+# Establecer los permisos adecuados
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www/storage
+
+# Exponer el puerto 9000
 EXPOSE 9000
 
-# Ejecuta el servidor PHP-FPM
+# Comando por defecto
 CMD ["php-fpm"]
