@@ -22,7 +22,18 @@ class UserController extends Controller
             'users' => $users,
         ], 200);
     }
+    public function getFollowers()
+    {
+        $user = Auth::user();
 
+        // Obtener los seguidores del usuario
+        $followers = $user->followers()->get();
+
+        return response()->json([
+            'success' => true,
+            'followers' => $followers
+        ]);
+    }
     /**
      * Get the authenticated user's information.
      *

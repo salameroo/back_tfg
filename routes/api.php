@@ -42,6 +42,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/follow', [UserController::class, 'follow']);      // Seguir a un usuario
     Route::post('/unfollow', [UserController::class, 'unFollow']);  // Dejar de seguir a un usuario
     Route::post('/check-following', [UserController::class, 'checkFollowing']); // Verificar si se sigue a un usuario específico
+    Route::get('/followed-users', [UserController::class, 'getMutualFollowers']); // Obtener usuarios seguidos mutuamente
+    Route::get('/followers', [UserController::class, 'getFollowers']);
 
     // Rutas para el feed de usuario
     Route::get('/feed', [UserController::class, 'feed']); // Obtener publicaciones del feed
@@ -59,7 +61,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Ruta para subir la foto de perfil
     Route::post('/upload-profile-photo', [UserController::class, 'uploadProfilePhoto']);
     Route::get('/users/search', [UserController::class, 'search']);   // Buscar usuarios
-    Route::get('/followed-users', [UserController::class, 'getMutualFollowers']); // Obtener usuarios seguidos mutuamente
 
     // Rutas para publicaciones
     Route::post('/posts/{post}/like', [UserController::class, 'like']);        // Dar "me gusta" a una publicación
