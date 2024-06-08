@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,19 +15,12 @@ class InitDB extends Seeder
     public function run(): void
     {
         // Ruta al archivo SQL
-        $path = database_path('seeders/CargramLlenito.sql');
+        $path = database_path('seeders/railway.sql');
 
         // Lee el contenido del archivo SQL
         $sql = File::get($path);
 
-        // Divide el SQL en consultas individuales
-        $queries = array_filter(array_map('trim', explode(';', $sql)));
-
-        // Ejecuta cada consulta individualmente
-        foreach ($queries as $query) {
-            if (!empty($query)) {
-                DB::statement($query);
-            }
-        }
+        // Ejecuta el SQL
+        DB::unprepared($sql);
     }
 }

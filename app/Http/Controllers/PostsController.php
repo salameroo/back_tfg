@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Image as ImageModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 
 class PostsController extends Controller
 {
@@ -19,7 +20,6 @@ class PostsController extends Controller
         return PostResource::collection($posts);
     }
 
-    // Función para crear imágenes desde una cadena base64 con soporte para varios formatos
     private function createImageFromBase64($base64)
     {
         $imageData = base64_decode($base64);
@@ -33,7 +33,13 @@ class PostsController extends Controller
             case 'image/jpeg':
             case 'image/png':
             case 'image/gif':
+            case 'image/svg':
             case 'image/webp':
+            case 'image/tiff':
+            case 'image/heic':
+            case 'image/heif':
+            case 'image/avif':
+            case 'image/jpg':
                 return imagecreatefromstring($imageData);
             default:
                 throw new \Exception('Unsupported image type: ' . $mimeType);
@@ -104,6 +110,7 @@ class PostsController extends Controller
 
         return response()->json(['message' => 'Publicación creada exitosamente', 'post' => $post], 201);
     }
+
 
     public function show(Post $post)
     {

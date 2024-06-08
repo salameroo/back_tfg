@@ -24,8 +24,14 @@ class AuthController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|min:5',
                 'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/',
+                'password' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'regex:/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/',
+                ],
                 'cPassword' => 'required|same:password',
+                'ip' => 'required|ip', // Validación de la IP
             ]);
 
             if ($validator->fails()) {
@@ -37,6 +43,7 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'ip' => $request->ip, // Guardar la IP por seguridad
             ]);
 
             // Crear un token de acceso
@@ -49,6 +56,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'An error occurred while registering user.', 'message' => $e->getMessage()], 500);
         }
     }
+
 
     public function login(Request $request)
     {

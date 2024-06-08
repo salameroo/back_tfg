@@ -1,66 +1,184 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Backend de CarGram
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+#### Como inicializar la API
 
-## About Laravel
+Clonar codigo del repositorio.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Genera una nueva clave para tu aplicación Laravel.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+*php artisan key:generate*
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#### Migrar y Poblar la Base de Datos
 
-## Learning Laravel
+Ejecuta las migraciones de base de datos para crear las tablas necesarias y luego ejecuta los seeders para poblar la base de datos con datos iniciales.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Migrar la base de datos:**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+*php artisan migrate*
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Poblar la base de datos:**
 
-## Laravel Sponsors
+El archivo SQL exportado está disponible en el directorio `/database/seeders` con el nombre `railway.sql`. Para importar la base de datos desde tu servidor local (Laragon, XAMPP, etc.), ejecuta el siguiente comando:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+*php artisan db:seed --class=InitDB*
 
-### Premium Partners
+#### Iniciar el Servidor de Desarrollo
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Inicia el servidor de desarrollo de Laravel.
 
-## Contributing
+*php artisan serve*
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Esto iniciará el servidor en `http://localhost:8000`.
 
-## Code of Conduct
+#### Configurar .env en local
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Es importante tener en cuenta que el .env no se sube al repositorio por lo cual es importante crearlo, este podría ser un ejemplo de configuración:
 
-## Security Vulnerabilities
+*APP_NAME=Laravel*
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+*APP_ENV=local*
 
-## License
+*APP_KEY=base64:gFd6CF2g33Cc12TrKou2TtIedlJJvAiMZDcSbz1g1B0=*
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+*APP_DEBUG=true*
+
+*APP_URL=http://localhost*
+
+*LOG_CHANNEL=stack*
+
+*LOG_DEPRECATIONS_CHANNEL=null*
+
+*LOG_LEVEL=debug*
+
+*DB_CONNECTION=mysql*
+
+*DB_HOST=127.0.0.1*
+
+*DB_PORT=3306*
+
+*DB_DATABASE=cargram*
+
+*DB_USERNAME=root*
+
+*DB_PASSWORD=*
+
+#### Importación de Base de Datos
+
+Para inicializar la base de datos con una población de datos inicial, siga los pasos a continuación:
+
+1. **Ubicación del Archivo SQL:**
+   El archivo SQL exportado está disponible en el directorio `/database/seeders` con el nombre `railway.sql`. Este archivo contiene una población de datos inicial para su conveniencia.
+2. **Importación desde el Servidor Local:**
+   Para importar la base de datos en su servidor local (Laragon, XAMPP, etc.), ejecute el siguiente comando en la consola:
+
+   php artisan db:seed --class=InitDB
+
+   Este comando ejecutará el seeder `InitDB` y poblará la base de datos con los datos especificados en el archivo `railway.sql`.
+
+### Documentación de la API de Laravel
+
+#### Rutas Públicas
+
+##### Registro de Usuario
+
+**Ruta:** `POST /api/register`
+
+* **Descripción:** Registra a un nuevo usuario.
+* **Parámetros de la solicitud:**
+  * `name`: Nombre del usuario.
+  * `email`: Correo electrónico del usuario.
+  * `password`: Contraseña del usuario.
+  * `cPassword`: Confirmación de la contraseña.
+* **Respuesta exitosa:** Devuelve un mensaje de éxito, un token JWT y los datos del usuario registrado.
+
+##### Inicio de Sesión
+
+**Ruta:** `POST /api/login`
+
+* **Descripción:** Inicia sesión y devuelve un token JWT.
+* **Parámetros de la solicitud:**
+  * `email`: Correo electrónico del usuario.
+  * `password`: Contraseña del usuario.
+* **Respuesta exitosa:** Devuelve un mensaje de éxito, un token JWT y los datos del usuario autenticado.
+
+#### Rutas Protegidas (Requieren Autenticación)
+
+##### Cerrar Sesión
+
+**Ruta:** `POST /api/logout`
+
+* **Descripción:** Cierra la sesión del usuario autenticado.
+* **Headers:** Requiere el token de autenticación (Bearer token).
+* **Respuesta exitosa:** Devuelve un mensaje indicando que la sesión se ha cerrado con éxito.
+
+##### Obtener Conversaciones
+
+**Ruta:** `GET /api/conversations`
+
+* **Descripción:** Obtiene todas las conversaciones del usuario autenticado.
+* **Headers:** Requiere el token de autenticación (Bearer token).
+* **Respuesta exitosa:** Devuelve una lista de conversaciones, cada una con los detalles del último mensaje.
+
+##### Crear Nueva Publicación
+
+**Ruta:** `POST /api/newpost`
+
+* **Descripción:** Crea una nueva publicación.
+* **Headers:** Requiere el token de autenticación (Bearer token).
+* **Parámetros de la solicitud:**
+  * `title`: Título de la publicación.
+  * `content`: Contenido de la publicación.
+* **Respuesta exitosa:** Devuelve un mensaje de éxito y los detalles de la publicación creada.
+
+##### Seguir a un Usuario
+
+**Ruta:** `POST /api/follow`
+
+* **Descripción:** Sigue a un usuario específico.
+* **Headers:** Requiere el token de autenticación (Bearer token).
+* **Parámetros de la solicitud:**
+  * `user_id`: ID del usuario a seguir.
+* **Respuesta exitosa:** Devuelve un mensaje indicando que ahora se sigue al usuario.
+
+##### Obtener Feed de Publicaciones
+
+**Ruta:** `GET /api/feed`
+
+* **Descripción:** Obtiene las publicaciones del feed del usuario autenticado.
+* **Headers:** Requiere el token de autenticación (Bearer token).
+* **Respuesta exitosa:** Devuelve una lista de publicaciones del feed del usuario.
+
+##### Obtener Usuarios
+
+**Ruta:** `GET /api/users`
+
+* **Descripción:** Obtiene la lista de todos los usuarios.
+* **Headers:** Requiere el token de autenticación (Bearer token).
+* **Respuesta exitosa:** Devuelve una lista de usuarios con sus detalles.
+
+#### Otros Endpoints
+
+1. **Subir Foto de Perfil:**
+   * **Ruta:** `POST /api/upload-profile-photo`
+   * **Descripción:** Sube o actualiza la foto de perfil del usuario.
+   * **Headers:** Requiere el token de autenticación (Bearer token).
+2. **Dar "Me Gusta" a una Publicación:**
+   * **Ruta:** `POST /api/posts/{post}/like`
+   * **Descripción:** Da "me gusta" a una publicación específica.
+   * **Headers:** Requiere el token de autenticación (Bearer token).
+3. **Comentar en una Publicación:**
+   * **Ruta:** `POST /api/posts/{post}/comment`
+   * **Descripción:** Añade un comentario a una publicación específica.
+   * **Headers:** Requiere el token de autenticación (Bearer token).
+4. **Obtener Publicaciones del Mapa:**
+   * **Ruta:** `GET /api/feed/mapa`
+   * **Descripción:** Obtiene publicaciones geolocalizadas para mostrar en un mapa.
+   * **Headers:** Requiere el token de autenticación (Bearer token).
+5. **Buscar Usuarios:**
+   * **Ruta:** `GET /api/users/search`
+   * **Descripción:** Busca usuarios por nombre o email.
+   * **Headers:** Requiere el token de autenticación (Bearer token).
+6. **Verificar Seguimiento:**
+   * **Ruta:** `POST /api/check-following`
+   * **Descripción:** Verifica si el usuario autenticado sigue a otro usuario específico.
+   * **Headers:** Requiere el token de autenticación (Bearer token).

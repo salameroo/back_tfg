@@ -13,18 +13,14 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
-
--- Volcando estructura de base de datos para cargram
-/*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `railway` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `railway`;
-
 -- Volcando estructura para tabla cargram.comments
 CREATE TABLE IF NOT EXISTS `comments` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `post_id` bigint unsigned NOT NULL,
   `user_id` bigint unsigned NOT NULL,
-  `text` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -32,18 +28,20 @@ CREATE TABLE IF NOT EXISTS `comments` (
   KEY `comments_user_id_foreign` (`user_id`),
   CONSTRAINT `comments_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
   CONSTRAINT `comments_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla cargram.comments: ~0 rows (aproximadamente)
+INSERT INTO `comments` (`id`, `post_id`, `user_id`, `text`, `created_at`, `updated_at`) VALUES
+	(2, 4, 2, 'PAOhdapwda', '2024-06-04 16:00:07', '2024-06-04 16:00:07');
 
 -- Volcando estructura para tabla cargram.failed_jobs
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
@@ -63,9 +61,9 @@ CREATE TABLE IF NOT EXISTS `follows` (
   KEY `follows_followed_user_id_foreign` (`followed_user_id`),
   CONSTRAINT `follows_followed_user_id_foreign` FOREIGN KEY (`followed_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `follows_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cargram.follows: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla cargram.follows: ~11 rows (aproximadamente)
 INSERT INTO `follows` (`id`, `user_id`, `followed_user_id`, `created_at`, `updated_at`) VALUES
 	(1, 1, 1, NULL, NULL),
 	(2, 2, 1, NULL, NULL),
@@ -76,21 +74,22 @@ INSERT INTO `follows` (`id`, `user_id`, `followed_user_id`, `created_at`, `updat
 	(7, 7, 1, NULL, NULL),
 	(8, 1, 7, NULL, NULL),
 	(9, 7, 6, NULL, NULL),
-	(10, 10, 1, NULL, NULL);
+	(10, 10, 1, NULL, NULL),
+	(11, 1, 10, NULL, NULL);
 
 -- Volcando estructura para tabla cargram.images
 CREATE TABLE IF NOT EXISTS `images` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `post_id` bigint unsigned NOT NULL,
-  `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `images_post_id_foreign` (`post_id`),
   CONSTRAINT `images_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cargram.images: ~25 rows (aproximadamente)
+-- Volcando datos para la tabla cargram.images: ~27 rows (aproximadamente)
 INSERT INTO `images` (`id`, `post_id`, `url`, `created_at`, `updated_at`) VALUES
 	(8, 4, '/storage/post_1717155687_6659b7671e483.webp', '2024-05-31 09:41:27', '2024-05-31 09:41:27'),
 	(13, 4, '/storage/post_1717399946_665d718a1ea78.webp', '2024-06-03 05:32:26', '2024-06-03 05:32:26'),
@@ -118,8 +117,7 @@ INSERT INTO `images` (`id`, `post_id`, `url`, `created_at`, `updated_at`) VALUES
 	(36, 26, '/storage/post_1717418839_665dbb5732d93.webp', '2024-06-03 10:47:19', '2024-06-03 10:47:19'),
 	(37, 27, '/storage/post_1717418927_665dbbaf7d581.webp', '2024-06-03 10:48:47', '2024-06-03 10:48:47'),
 	(38, 28, '/storage/post_1717418997_665dbbf548c0d.webp', '2024-06-03 10:49:57', '2024-06-03 10:49:57'),
-	(39, 29, '/storage/post_1717419031_665dbc173da0c.webp', '2024-06-03 10:50:31', '2024-06-03 10:50:31'),
-	(40, 30, '/storage/post_1717591499_66605dcbc9f2d.webp', '2024-06-05 10:44:59', '2024-06-05 10:44:59');
+	(39, 29, '/storage/post_1717419031_665dbc173da0c.webp', '2024-06-03 10:50:31', '2024-06-03 10:50:31');
 
 -- Volcando estructura para tabla cargram.likes
 CREATE TABLE IF NOT EXISTS `likes` (
@@ -133,23 +131,24 @@ CREATE TABLE IF NOT EXISTS `likes` (
   KEY `likes_user_id_foreign` (`user_id`),
   CONSTRAINT `likes_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
   CONSTRAINT `likes_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cargram.likes: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla cargram.likes: ~7 rows (aproximadamente)
 INSERT INTO `likes` (`id`, `post_id`, `user_id`, `created_at`, `updated_at`) VALUES
 	(2, 7, 1, '2024-06-03 08:41:01', '2024-06-03 08:41:01'),
-	(3, 8, 1, '2024-06-03 08:42:04', '2024-06-03 08:42:04'),
 	(4, 8, 3, '2024-06-03 10:03:27', '2024-06-03 10:03:27'),
 	(5, 9, 6, '2024-06-03 10:28:13', '2024-06-03 10:28:13'),
 	(6, 8, 6, '2024-06-03 10:28:15', '2024-06-03 10:28:15'),
-	(7, 30, 10, '2024-06-05 10:45:14', '2024-06-05 10:45:14');
+	(7, 8, 1, '2024-06-04 12:04:20', '2024-06-04 12:04:20'),
+	(8, 4, 2, '2024-06-04 16:00:05', '2024-06-04 16:00:05'),
+	(9, 23, 2, '2024-06-04 16:00:25', '2024-06-04 16:00:25');
 
 -- Volcando estructura para tabla cargram.messages
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `sender_id` bigint unsigned NOT NULL,
   `receiver_id` bigint unsigned NOT NULL,
-  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -157,25 +156,27 @@ CREATE TABLE IF NOT EXISTS `messages` (
   KEY `messages_receiver_id_foreign` (`receiver_id`),
   CONSTRAINT `messages_receiver_id_foreign` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `messages_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cargram.messages: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla cargram.messages: ~7 rows (aproximadamente)
 INSERT INTO `messages` (`id`, `sender_id`, `receiver_id`, `message`, `created_at`, `updated_at`) VALUES
 	(1, 1, 1, 'aowdubhaowidk', '2024-06-03 10:55:17', '2024-06-03 10:55:17'),
 	(2, 1, 7, 'Hola tio que tal ?', '2024-06-04 06:13:18', '2024-06-04 06:13:18'),
 	(3, 1, 7, 'axasczs', '2024-06-04 06:45:03', '2024-06-04 06:45:03'),
 	(4, 7, 1, 'Pues la verdad que bastante bien no me puedo quejar', '2024-06-04 09:36:58', '2024-06-04 09:36:58'),
-	(5, 7, 1, 'Buenos dias por la mañanaaa', '2024-06-04 10:26:25', '2024-06-04 10:26:25');
+	(5, 7, 1, 'Buenos dias por la mañanaaa', '2024-06-04 10:26:25', '2024-06-04 10:26:25'),
+	(6, 1, 7, 'No muestra los mensajes kiooooooooooooooooooooooo', '2024-06-04 12:00:57', '2024-06-04 12:00:57'),
+	(7, 1, 7, 'Bonso el puto amo', '2024-06-04 16:03:21', '2024-06-04 16:03:21');
 
 -- Volcando estructura para tabla cargram.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cargram.migrations: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla cargram.migrations: ~14 rows (aproximadamente)
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_10_12_000000_create_users_table', 1),
 	(2, '2014_10_12_100000_create_password_reset_tokens_table', 1),
@@ -190,12 +191,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(11, '2024_05_20_074242_add_latitude_and_longitude_to_posts_table', 1),
 	(12, '2024_05_20_112317_add_profile_image_to_users_table', 1),
 	(13, '2024_05_24_062526_create_messages_table', 1),
-	(14, '2024_05_29_112408_add_profile_photo_to_users_table', 1);
+	(14, '2024_05_29_112408_add_profile_photo_to_users_table', 1),
+	(15, '2024_06_07_164145_add_ip_to_users_table', 2);
 
 -- Volcando estructura para tabla cargram.password_reset_tokens
 CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -205,11 +207,11 @@ CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
 -- Volcando estructura para tabla cargram.personal_access_tokens
 CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -217,32 +219,31 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla cargram.personal_access_tokens: ~1 rows (aproximadamente)
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
-	(10, 'App\\Models\\User', 4, 'authToken', '2701e00e0b0f1f4289feb2be38f6fb1a82c67545536670ea3eac0d930b70eb99', '["*"]', '2024-06-03 10:05:08', NULL, '2024-06-03 10:05:05', '2024-06-03 10:05:08'),
-	(19, 'App\\Models\\User', 7, 'authToken', '3d775066818fb09326e0fb35f742c9a7eb800d91f7378bcc09f2809a4a91c16b', '["*"]', '2024-06-05 08:42:02', NULL, '2024-06-04 06:45:50', '2024-06-05 08:42:02');
+	(10, 'App\\Models\\User', 4, 'authToken', '2701e00e0b0f1f4289feb2be38f6fb1a82c67545536670ea3eac0d930b70eb99', '["*"]', '2024-06-03 10:05:08', NULL, '2024-06-03 10:05:05', '2024-06-03 10:05:08');
 
 -- Volcando estructura para tabla cargram.posts
 CREATE TABLE IF NOT EXISTS `posts` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint unsigned NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `tag_ppl` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `tag_ppl` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `latitude` decimal(10,8) DEFAULT NULL,
   `longitude` decimal(11,8) DEFAULT NULL,
-  `aliasLocation` text COLLATE utf8mb4_unicode_ci,
+  `aliasLocation` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `posts_user_id_foreign` (`user_id`),
   CONSTRAINT `posts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cargram.posts: ~19 rows (aproximadamente)
+-- Volcando datos para la tabla cargram.posts: ~22 rows (aproximadamente)
 INSERT INTO `posts` (`id`, `user_id`, `title`, `description`, `tag_ppl`, `location`, `created_at`, `updated_at`, `latitude`, `longitude`, `aliasLocation`) VALUES
 	(4, 1, 'pues nada un bugatis', 'Asdasd', '@angel_salamero', NULL, '2024-06-03 05:32:26', '2024-06-03 05:32:26', 40.41604466, -3.70445251, NULL),
 	(6, 1, 'Audi bate records!!', 'sdpsad', '@', 'Lat: 41.66662859024897, Lng: -1.0426712036132815', '2024-06-03 05:36:33', '2024-06-03 05:36:33', 41.66662859, -1.04267120, NULL),
@@ -266,36 +267,39 @@ INSERT INTO `posts` (`id`, `user_id`, `title`, `description`, `tag_ppl`, `locati
 	(27, 9, 'Citroenazo', 'Pa los q digan q Citröen no sabe hacer coches.', '@angel_salamero', 'Citroen, Русе, 7000, Bulgaria', '2024-06-03 10:48:47', '2024-06-03 10:48:47', 43.81355340, 25.98036108, NULL),
 	(28, 9, 'supra x gtr', 'solo japonesess', '@angel_salamero', 'Lat: -33.89549722712386, Lng: 151.17187500000003', '2024-06-03 10:49:57', '2024-06-03 10:49:57', -33.89549723, 151.17187500, NULL),
 	(29, 9, 'gtr x supra', 'Pues nada nuevo solo autos', '@angel_salamero', 'Lat: 43.34116005412307, Lng: 142.73437500000003', '2024-06-03 10:50:31', '2024-06-03 10:50:31', 43.34116005, 142.73437500, NULL),
-	(30, 10, 'Aprobados!', 'Pues nuestros alumnos de este año son unas maquinas de programar y aunque lo han pasado mal, todos aprueban!!!!', '@angel_salamero', 'Lat: 41.90305660226908, Lng: 0.18474519252777102', '2024-06-05 10:44:59', '2024-06-05 10:44:59', 41.90305660, 0.18474519, NULL);
+	(30, 10, 'Mojave', 'Pues un fondo d pantalla', '@angel_salamero', 'Lat: 35.01235023754666, Lng: -118.18725407123566', '2024-06-07 16:52:20', '2024-06-07 16:52:20', 35.01235024, -118.18725407, NULL),
+	(31, 10, 'Mojave', 'Pues un fondo d pantalla', '@angel_salamero', 'Lat: 35.01235023754666, Lng: -118.18725407123566', '2024-06-07 17:02:51', '2024-06-07 17:02:51', 35.01235024, -118.18725407, NULL),
+	(32, 10, 'Mojave', 'Pues un fondo d pantalla', '@angel_salamero', 'Lat: 35.01235023754666, Lng: -118.18725407123566', '2024-06-07 17:04:09', '2024-06-07 17:04:09', 35.01235024, -118.18725407, NULL);
 
 -- Volcando estructura para tabla cargram.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `profile_photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `profile_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profile_photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `profile_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `ip` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cargram.users: ~8 rows (aproximadamente)
-INSERT INTO `users` (`id`, `name`, `email`, `profile_photo`, `profile_image`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(1, 'angel_salamero', 'a@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$SDp98qWa57eg0X2Ac0515uJXxuqWahavy3nJFu.VOMaqTBGdG6Cy.', NULL, '2024-05-31 17:06:57', '2024-06-03 08:34:17'),
-	(2, 'jose_subias', 'j@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$MM5lpmIIZ8WeEu5O4a/LxO/0WfloLtNaZ1fBgdiSxbAohCKjp6IAm', NULL, '2024-05-31 17:07:57', '2024-05-31 17:07:57'),
-	(3, 'pedro_subias', 'pedrosubias@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$y6pf.GdN/PzM3C4IIJnkhuCgpPUvhp0t/HekFSfnhk726MiXJcNb.', NULL, '2024-06-03 10:01:52', '2024-06-03 10:01:52'),
-	(4, 'jose_perales', 'joseperales@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$h.GuRQfmNoeZYJvBHHSyOuJ2NBR/VdOD9Y771WLMi4nGMYb8FXKB.', NULL, '2024-06-03 10:05:05', '2024-06-03 10:05:05'),
-	(5, 'juan_gargallo', 'juangargallo@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$zHAbDZ7f/hDsgLDrpMtMB.YvZgWuGMynmSg9rqcwaJ9lGt4yQWlqe', NULL, '2024-06-03 10:16:43', '2024-06-03 10:16:43'),
-	(6, 'bbonso_', 'bonso@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$6oAsrNGMHob7xmrfCIRBoOhQAFqRbVDS4K/Lkxyy3RV/EI0AGZJx6', NULL, '2024-06-03 10:23:00', '2024-06-03 10:23:00'),
-	(7, 'jaime_fnz', 'jaimeferrer@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$rqjPbJDpOec7K95MdS6XiuDS2TkwuTSST0VjPcWzOjGn1T6ojCV2S', NULL, '2024-06-03 10:29:08', '2024-06-03 10:29:08'),
-	(8, 'nicolas_perera', 'nicolasperera@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$QImmzM7Rg/dbitrGZx409uTmcbr776lhg0hcnA.ROt8zmWcGUSFZa', NULL, '2024-06-03 10:44:43', '2024-06-03 10:44:43'),
-	(9, 'alvaro_manaliu', 'alvaromanaliu@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$.XRie8t8P7ickZMNGoCFleujTrksG4.th2BihYLlqF5GzuhiWH5zu', NULL, '2024-06-03 10:48:09', '2024-06-03 10:48:09'),
-	(10, 'profesor_mordefuentes', 'profesormordefuentes@gmail.com', NULL, NULL, NULL, '$2y$12$vEOs9gX.PUJfLSU141NKJ..6wh43iLnO6/qC5vh1FhfJ3GtXzXDa6', NULL, '2024-06-05 10:43:21', '2024-06-05 10:43:21');
+-- Volcando datos para la tabla cargram.users: ~10 rows (aproximadamente)
+INSERT INTO `users` (`id`, `name`, `email`, `profile_photo`, `profile_image`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `ip`) VALUES
+	(1, 'angel_salamero', 'a@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$SDp98qWa57eg0X2Ac0515uJXxuqWahavy3nJFu.VOMaqTBGdG6Cy.', NULL, '2024-05-31 17:06:57', '2024-06-03 08:34:17', NULL),
+	(2, 'jose_subias', 'j@gmail.com', NULL, 'profile_photos/Tmf64uM9BXFHYiyT7zJFRT2A0eKNYhpDBYHGySqZ.webp', NULL, '$2y$12$MM5lpmIIZ8WeEu5O4a/LxO/0WfloLtNaZ1fBgdiSxbAohCKjp6IAm', NULL, '2024-05-31 17:07:57', '2024-06-04 12:07:25', NULL),
+	(3, 'pedro_subias', 'pedrosubias@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$y6pf.GdN/PzM3C4IIJnkhuCgpPUvhp0t/HekFSfnhk726MiXJcNb.', NULL, '2024-06-03 10:01:52', '2024-06-03 10:01:52', NULL),
+	(4, 'jose_perales', 'joseperales@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$h.GuRQfmNoeZYJvBHHSyOuJ2NBR/VdOD9Y771WLMi4nGMYb8FXKB.', NULL, '2024-06-03 10:05:05', '2024-06-03 10:05:05', NULL),
+	(5, 'juan_gargallo', 'juangargallo@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$zHAbDZ7f/hDsgLDrpMtMB.YvZgWuGMynmSg9rqcwaJ9lGt4yQWlqe', NULL, '2024-06-03 10:16:43', '2024-06-03 10:16:43', NULL),
+	(6, 'bbonso_', 'bonso@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$6oAsrNGMHob7xmrfCIRBoOhQAFqRbVDS4K/Lkxyy3RV/EI0AGZJx6', NULL, '2024-06-03 10:23:00', '2024-06-03 10:23:00', NULL),
+	(7, 'jaime_fnz', 'jaimeferrer@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$rqjPbJDpOec7K95MdS6XiuDS2TkwuTSST0VjPcWzOjGn1T6ojCV2S', NULL, '2024-06-03 10:29:08', '2024-06-03 10:29:08', NULL),
+	(8, 'nicolas_perera', 'nicolasperera@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$QImmzM7Rg/dbitrGZx409uTmcbr776lhg0hcnA.ROt8zmWcGUSFZa', NULL, '2024-06-03 10:44:43', '2024-06-03 10:44:43', NULL),
+	(9, 'alvaro_manaliu', 'alvaromanaliu@gmail.com', NULL, 'profile_photos/lopyUIweEQn0xLprYYXHAKR8VLMmgF9K9H5IHElF.webp', NULL, '$2y$12$.XRie8t8P7ickZMNGoCFleujTrksG4.th2BihYLlqF5GzuhiWH5zu', NULL, '2024-06-03 10:48:09', '2024-06-03 10:48:09', NULL),
+	(10, 'joselinesaaa', 'joselines@gmail.com', NULL, 'profile_photos/WRizzOORBUSX8G2Igfc8WCo3RHO8GvBgwH2fTbMw.png', NULL, '$2y$12$voHMxID0uKFOoGHdzizmAez.g/tp7G8LgBdXYE/eowoa.ZPKaHdhS', NULL, '2024-06-07 16:45:03', '2024-06-07 16:50:08', '31.221.214.128');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
