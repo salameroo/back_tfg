@@ -97,8 +97,8 @@ class AuthController extends Controller
 
 
         // Invalidar la sesión en el servidor
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
 
         // Elimina las cookies de sesión y CSRF
         $response = response()->json([
