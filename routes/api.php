@@ -19,6 +19,10 @@ use App\Http\Controllers\MessageController;
 |
 */
 
+Route::get('/test-session', function () {
+    return session()->all();
+});
+
 // Ruta para obtener la cookie CSRF
 Route::middleware('web')->get('/sanctum/csrf-cookie', function (Request $request) {
     return response()->json(['message' => 'CSRF cookie set']);
