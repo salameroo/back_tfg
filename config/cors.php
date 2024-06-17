@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'storage/public'], // Rutas que se aplicarán las reglas CORS
+    'paths' => ['api/*', 'newpost', 'sanctum/csrf-cookie', 'login', 'storage/public'], // Rutas que se aplicarán las reglas CORS
 
     'allowed_methods' => ['*'],
 

@@ -108,7 +108,7 @@ class PostsController extends Controller
             }
         }
 
-        return response()->json(['message' => 'Publicación creada exitosamente', 'post' => $post], 200);
+        return response()->json(['message' => 'Publicación creada exitosamente', 'post' => $post], 201);
     }
 
 
