@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 
-    'allowed_origins' => ['https://www.cargram.asalamero.dawmor.cloud'],
+    'allowed_origins' => ['https://www.cargram.asalamero.dawmor.cloud', 'https://www.cargram.asalamero.dawmor.cloud/'],
 
     'allowed_origins_patterns' => [],
 
