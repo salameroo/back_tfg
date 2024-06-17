@@ -50,9 +50,7 @@ class PostsController extends Controller
     {
         $user = Auth::guard('sanctum')->user();
         if (!$user) {
-            return response()->json(['message' => 'Unauthenticated'], 401)
-                ->header('Access-Control-Allow-Origin', 'https://www.cargram.asalamero.dawmor.cloud')
-                ->header('Access-Control-Allow-Credentials', 'true');
+            return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
         $request->validate([
@@ -106,15 +104,11 @@ class PostsController extends Controller
                 $imageModel->post_id = $post->id;
                 $imageModel->save();
             } catch (\Exception $e) {
-                return response()->json(['message' => 'Error al procesar la imagen', 'error' => $e->getMessage()], 422)
-                    ->header('Access-Control-Allow-Origin', 'https://www.cargram.asalamero.dawmor.cloud')
-                    ->header('Access-Control-Allow-Credentials', 'true');
+                return response()->json(['message' => 'Error al procesar la imagen', 'error' => $e->getMessage()], 422);
             }
         }
 
-        return response()->json(['message' => 'Publicación creada exitosamente', 'post' => $post], 201)
-            ->header('Access-Control-Allow-Origin', 'https://www.cargram.asalamero.dawmor.cloud')
-            ->header('Access-Control-Allow-Credentials', 'true');
+        return response()->json(['message' => 'Publicación creada exitosamente', 'post' => $post], 201);
     }
 
 
