@@ -48,10 +48,16 @@ class PostsController extends Controller
 
     public function store(Request $request)
     {
+        // Mensaje de depuración para ver el usuario autenticado
+        \Log::info('User authenticated', ['user_id' => Auth::guard('sanctum')->id()]);
+
         $user = Auth::guard('sanctum')->user();
         if (!$user) {
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
+
+        // Mensaje de depuración para ver el contenido del request
+        \Log::info('Request data', ['request' => $request->all()]);
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -82,6 +88,8 @@ class PostsController extends Controller
                     $imageData = substr($imageData, strpos($imageData, ',') + 1);
                 }
 
+                \Log::info('Processing image', ['image_data' => substr($imageData, 0, 100)]); // Log the first 100 characters of the image data
+
                 $img = $this->createImageFromBase64($imageData);
 
                 if (!$img) {
@@ -99,17 +107,23 @@ class PostsController extends Controller
 
                 $imageUrl = Storage::url($imageName);
 
+                \Log::info('Image stored', ['image_url' => $imageUrl]);
+
                 $imageModel = new ImageModel();
                 $imageModel->url = $imageUrl;
                 $imageModel->post_id = $post->id;
                 $imageModel->save();
             } catch (\Exception $e) {
+                \log::error('Error processing image', ['error' => $e->getMessage()]);
                 return response()->json(['message' => 'Error al procesar la imagen', 'error' => $e->getMessage()], 422);
             }
         }
 
+        \Log::info('Post created successfully', ['post_id' => $post->id]);
+
         return response()->json(['message' => 'Publicación creada exitosamente', 'post' => $post], 201);
     }
+
 
 
     public function show(Post $post)
