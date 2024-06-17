@@ -9,16 +9,20 @@ class Cors
 {
     public function handle(Request $request, Closure $next)
     {
+        // Allow all origins, methods, and headers for testing purposes
         $response = $next($request);
-        $response->headers->set('Access-Control-Allow-Origin', 'https://www.cargram.asalamero.dawmor.cloud');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
         $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        $response->headers->set('Access-Control-Allow-Credentials', 'true');
 
-        if ($request->getMethod() == "OPTIONS") {
-            $response->headers->set('Access-Control-Allow-Origin', '*');
-            $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
-            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-            $response->setStatusCode(200);
+        if ($request->getMethod() === 'OPTIONS') {
+            return response('', 204)->withHeaders([
+                'Access-Control-Allow-Origin' => '*',
+                'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS, PUT, DELETE',
+                'Access-Control-Allow-Headers' => 'Content-Type, Authorization, X-Requested-With',
+                'Access-Control-Allow-Credentials' => 'true',
+            ]);
         }
 
         return $response;
