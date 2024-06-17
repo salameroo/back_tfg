@@ -38,12 +38,12 @@ Route::middleware('web')->get('/sanctum/csrf-cookie', function (Request $request
 // Rutas públicas para autenticación y registro
 Route::post('/login', [AuthController::class, 'login']);       // Inicio de sesión
 Route::post('/register', [AuthController::class, 'register']); // Registro de nuevo usuario
-Route::post('/newpost', [PostsController::class, 'store']); // Crear una nueva publicación
 
 // Rutas protegidas por el middleware 'auth:sanctum'
 Route::middleware('auth:sanctum')->group(function () {
 
     // Rutas para gestión de publicaciones
+    Route::post('/nuevoPost', [PostsController::class, 'store']); // Crear una nueva publicación
 
     // Rutas para autenticación
     Route::post('/logout', [AuthController::class, 'logout']);  // Cerrar sesión
