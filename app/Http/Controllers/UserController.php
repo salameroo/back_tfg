@@ -177,9 +177,6 @@ class UserController extends Controller
         ]);
     }
 
-
-
-
     public function updateSettings(Request $request)
     {
         $user = Auth::guard('sanctum')->user();
