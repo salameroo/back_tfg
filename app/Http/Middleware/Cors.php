@@ -6,25 +6,23 @@ use Closure;
 
 class Cors
 {
+    protected $allowedOrigins = [
+        'https://www.cargram.asalamero.dawmor.cloud',
+        'https://www.cargram.asalamero.dawmor.cloud/'
+    ];
+
     public function handle($request, Closure $next)
     {
-        $response = $next($request);
+        $origin = $request->headers->get('origin');
 
-        // Allow specific origin
-        $response->headers->set('Access-Control-Allow-Origin', 'https://www.cargram.asalamero.dawmor.cloud');
-        $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-        $response->headers->set('Access-Control-Allow-Credentials', 'true');
-
-        if ($request->getMethod() === 'OPTIONS') {
-            return response('', 204)->withHeaders([
-                'Access-Control-Allow-Origin' => 'https://www.cargram.asalamero.dawmor.cloud',
-                'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS, PUT, DELETE',
-                'Access-Control-Allow-Headers' => 'Content-Type, Authorization, X-Requested-With',
-                'Access-Control-Allow-Credentials' => 'true',
-            ]);
+        if (in_array($origin, $this->allowedOrigins)) {
+            return $next($request)
+                ->header('Access-Control-Allow-Origin', $origin)
+                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-CSRF-Token')
+                ->header('Access-Control-Allow-Credentials', 'true');
         }
 
-        return $response;
+        return $next($request);
     }
 }
