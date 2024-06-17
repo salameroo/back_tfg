@@ -17,9 +17,9 @@ return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'storage/public'], // Rutas que se aplicarán las reglas CORS
 
-    'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://www.cargram.asalamero.dawmor.cloud', 'https://www.cargram.asalamero.dawmor.cloud/'],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
