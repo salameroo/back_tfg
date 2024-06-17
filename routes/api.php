@@ -43,8 +43,8 @@ Route::post('/register', [AuthController::class, 'register']); // Registro de nu
 Route::middleware('auth:sanctum')->group(function () {
 
     // Rutas para gestión de publicaciones
-    Route::post('/nuevoPost', [PostsController::class, 'store']); // Crear una nueva publicación
-
+    Route::post('/newpost', [PostsController::class, 'store']);
+    Route::post('/nuevoPost', [PostsController::class, 'store']);
     // Rutas para autenticación
     Route::post('/logout', [AuthController::class, 'logout']);  // Cerrar sesión
 
