@@ -7,7 +7,8 @@ use Closure;
 class Cors
 {
     protected $allowedOrigins = [
-        '*'
+        'https://www.cargram.asalamero.dawmor.cloud',
+        'https://cargram.asalamero.dawmor.cloud'
     ];
 
     public function handle($request, Closure $next)
