@@ -19,6 +19,13 @@ use App\Http\Controllers\MessageController;
 |
 */
 
+Route::options('{any}', function (Request $request) {
+    return response('', 204)->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+})->where('any', '.*');
+
+
 Route::get('/test-session', function () {
     return session()->all();
 });
