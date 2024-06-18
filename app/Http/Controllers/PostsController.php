@@ -48,15 +48,15 @@ class PostsController extends Controller
 
     public function nuevoPost(Request $request)
     {
+        // Verificar autenticación
         $user = Auth::guard('sanctum')->user();
         if (!$user) {
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
+        // Validar los datos de entrada
         $request->validate([
             'title' => 'required|string|max:255',
-            'images' => 'required|array',
-            'images.*' => 'required|string',
             'description' => 'nullable|string|max:1000',
             'tag_ppl' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
@@ -65,6 +65,7 @@ class PostsController extends Controller
             'aliasLocation' => 'nullable|string'
         ]);
 
+        // Crear el nuevo post
         $post = new Post();
         $post->title = $request->title;
         $post->description = $request->description;
@@ -76,40 +77,10 @@ class PostsController extends Controller
         $post->aliasLocation = $request->aliasLocation;
         $post->save();
 
-        foreach ($request->images as $imageData) {
-            try {
-                if (strpos($imageData, ',') !== false) {
-                    $imageData = substr($imageData, strpos($imageData, ',') + 1);
-                }
-
-                $img = $this->createImageFromBase64($imageData);
-
-                if (!$img) {
-                    throw new \Exception("Error al crear la imagen desde la cadena base64.");
-                }
-
-                $imageName = 'post_' . time() . '_' . uniqid() . '.webp';
-                $imagePath = storage_path('app/public/' . $imageName);
-
-                if (!imagewebp($img, $imagePath)) {
-                    throw new \Exception("Error al guardar la imagen en formato WebP.");
-                }
-
-                imagedestroy($img);
-
-                $imageUrl = Storage::url($imageName);
-
-                $imageModel = new ImageModel();
-                $imageModel->url = $imageUrl;
-                $imageModel->post_id = $post->id;
-                $imageModel->save();
-            } catch (\Exception $e) {
-                return response()->json(['message' => 'Error al procesar la imagen', 'error' => $e->getMessage()], 422);
-            }
-        }
-
+        // Responder con éxito
         return response()->json(['message' => 'Publicación creada exitosamente', 'post' => $post], 201);
     }
+
     // public function store(Request $request)
     // {
     //     $user = Auth::guard('sanctum')->user();
